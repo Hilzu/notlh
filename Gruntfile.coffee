@@ -4,7 +4,8 @@ module.exports = (grunt) ->
 
     coffee:
       compile_all:
-        bare: true
+        options:
+          bare: true
         expand: true
         flatten: true
         src: ['src/**/*.coffee']
