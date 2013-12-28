@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="lib/require.js"></script>
+  <script>
+    require.config({
+      baseUrl: 'assets/js/',
+      paths: {
+        crafty: '../../lib/crafty'
+      }
+    });
+    require(['game'], function(Game) {
+      Game.start();
+    });
+  </script>
+  <title>Night of the Living Horror</title>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "night-of-the-living-horror",
+  "version": "0.0.1",
+  "description": "The epic Hilzu game.",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-coffee": "~0.8.0",
+    "grunt-coffeelint": "0.0.8",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}
