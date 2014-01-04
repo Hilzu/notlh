@@ -12,6 +12,17 @@ define ['crafty', 'map'], (Crafty, Map) ->
       else
         Map.pos_to_tile_loc(x: @x, y: @y)
 
+  Crafty.c 'Barrier',
+    init: ->
+      @requires '2D, Canvas, Color, Solid'
+      @color 'rgb(220, 50, 47)'
+
+    size: (size) ->
+      if size? and size.width? and size.height?
+        @attr w: size.width, h: size.height
+      else
+        width: @w, height: @h
+
 
   Crafty.c 'PlayerCharacter',
     init: ->

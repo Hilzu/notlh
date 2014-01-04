@@ -7,10 +7,24 @@ define ['crafty'], (Crafty) ->
     tile_size: 32
 
   init = ->
+    init_barriers()
+
     for x in [0...grid.width]
       for y in [0...grid.height]
         init_grid_loc x: x, y: y
     Crafty.e('PlayerCharacter').at x: 8, y: 20
+
+  init_barriers = ->
+    left_barrier = Crafty.e('Barrier').attr x: grid.x - 1, y: grid.y - 1
+    left_barrier.size width: 1, height: grid.height * grid.tile_size + 2
+    top_barrier = Crafty.e('Barrier').attr x: grid.x - 1, y: grid.y - 1
+    top_barrier.size width: grid.width * grid.tile_size + 2, height: 1
+    right_barrier = Crafty.e('Barrier').attr
+      x: grid.tile_size * grid.width + grid.x, y: grid.y - 1
+    right_barrier.size width: 1, height: grid.height * grid.tile_size + 2
+    bottom_barrier = Crafty.e('Barrier').attr
+      x: grid.x - 1, y: grid.height * grid.tile_size + grid.y
+    bottom_barrier.size width: grid.width * grid.tile_size + 2, height: 1
 
   init_grid_loc = (loc) ->
     Crafty.e('Tile').at loc
