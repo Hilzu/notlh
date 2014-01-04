@@ -18,3 +18,15 @@ define ['crafty', 'map'], (Crafty, Map) ->
       @requires 'Tile, Fourway, Collision'
       @color 'rgb(42, 161, 152)'
       @fourway 2
+      @onHit 'Solid', @stop_movement
+
+    stop_movement: ->
+      if @_movement
+        @x -= @_movement.x
+        @y -= @_movement.y
+
+        @x += @_movement.x
+        @x -= @_movement.x if @hit('Solid')
+
+        @y += @_movement.y
+        @y -= @_movement.y if @hit('Solid')
