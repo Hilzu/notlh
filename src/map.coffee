@@ -13,6 +13,7 @@ define ['crafty'], (Crafty) ->
       for y in [0...grid.height]
         init_grid_loc x: x, y: y
     Crafty.e('PlayerCharacter').at x: 8, y: 20
+    Crafty.e('GreatAncientOne').at x: 8, y: 0
 
   init_barriers = ->
     left_barrier = Crafty.e('Barrier').attr x: grid.x - 1, y: grid.y - 1
