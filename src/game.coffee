@@ -1,16 +1,13 @@
-define ['crafty', 'components', 'map', 'scenes'], (Crafty, Comp, Map, Scenes) ->
-  height = 712
-  width = 600
+define ['crafty', 'conf', 'components', 'map', 'scenes'],
+(Crafty, Conf, Comp, Map, Scenes) ->
 
   start = ->
     console.log 'Starting game...'
-    Crafty.init width, height
+    Crafty.init Conf.width, Conf.height
     Crafty.background 'rgb(0, 43, 54)'
     Map.grid.x = 12
     Map.grid.y = 28
     Crafty.scene 'Game'
 
   # Exports
-  height: height
   start: start
-  width: width
