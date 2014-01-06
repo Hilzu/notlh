@@ -118,3 +118,22 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
       @attr x: 0, y: 0, w: Conf.width, h: Conf.height
       @color 'rgb(0, 43, 54)'
       Crafty.e('TitleText').titleText 'You lost the game!'
+
+      retry_button = Crafty.e('TextButton').textButton 'Retry', ->
+        Crafty.scene 'Game'
+      retry_button_pos = Util.pos_to_center_entity retry_button
+      retry_button_pos.y += 50
+      retry_button.attr retry_button_pos
+
+
+  Crafty.c 'TextButton',
+    init: ->
+      @requires '2D, Canvas, Text, Mouse'
+      @textColor '#FDF6E3', 1
+      @textFont size: '20px'
+      @text 'Unset'
+      @z = 1
+
+    textButton: (text, onClick) ->
+      @text text
+      @bind 'Click', onClick
