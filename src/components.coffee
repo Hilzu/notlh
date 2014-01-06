@@ -53,12 +53,24 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
       @color 'rgb(211, 54, 130)'
 
 
+
+  Crafty.c 'TitleText',
+    init: ->
+      @requires '2D, Canvas, Text'
+      @textColor '#FDF6E3', 1
+      @textFont size: '40px', weight: 'bold'
+      @text 'Unset'
+      @z = 1
+
+    titleText: (text) ->
+      @text text
+      @attr Util.pos_to_center_entity @
+
+
   Crafty.c 'VictoryScreen',
     init: ->
       @requires '2D, Canvas, Color'
       @attr x: 0, y: 0, w: Conf.width, h: Conf.height
       @color 'rgb(0, 43, 54)'
-      victory_text = Crafty.e('2D, Canvas, Text').text('You won the game!')
-      victory_text.textColor('#FDF6E3', 1)
-      victory_text.textFont(size: '40px', weight: 'bold')
-      victory_text.attr Util.pos_to_center_entity(victory_text)
+      Crafty.e('TitleText').titleText 'You won the game!'
+
