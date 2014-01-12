@@ -46,10 +46,16 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
         @y -= @_movement.y if @hit('Solid')
 
     meet_the_ancient: ->
-      Crafty.scene 'Victory'
+      Crafty.scene 'NewLevel'
 
     die: ->
-      Crafty.scene 'Defeat'
+      Crafty.pause true
+      Crafty.e('TitleText').titleText 'Dead!'
+      @timeout(
+        ->
+          Crafty.pause false
+          Crafty.scene 'Defeat'
+        2000)
 
 
   Crafty.c 'GreatAncientOne',
@@ -75,10 +81,11 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
       @bind 'EnterFrame', @spawn_enemy_if_time
 
     time_since_last_spawn: 0
+    time_for_next_spawn: Conf.start_spawn_rate_in_ms
 
     spawn_enemy_if_time: (data) ->
       @time_since_last_spawn += data.dt
-      if @time_since_last_spawn >= Conf.enemy_spawn_rate_in_ms
+      if @time_since_last_spawn >= @time_for_next_spawn
         @time_since_last_spawn = 0
         @spawn_enemy()
 
@@ -89,6 +96,10 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
           Map.grid.x)
       enemy_y = -40
       Crafty.e('TheEnemy').attr x: enemy_x, y: enemy_y
+
+    set_spawn_factor: (factor) ->
+      console.log "Setting current spawn factor to #{factor}"
+      @time_for_next_spawn = Conf.start_spawn_rate_in_ms * (1 / factor)
 
 
   Crafty.c 'TitleText',
@@ -104,12 +115,38 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
       @attr Util.pos_to_center_entity @
 
 
+  Crafty.c 'SubTitleText',
+    init: ->
+      @requires 'TitleText'
+      @textFont size: '20px'
+
+    subTitleText: (text) ->
+      @text text
+      @attr Util.pos_to_center_entity @
+      @y += 50
+
+
   Crafty.c 'VictoryScreen',
     init: ->
       @requires '2D, Canvas, Color'
       @attr x: 0, y: 0, w: Conf.width, h: Conf.height
       @color 'rgb(0, 43, 54)'
       Crafty.e('TitleText').titleText 'You won the game!'
+
+
+  Crafty.c 'NewLevelScreen',
+    init: ->
+      @requires '2D, Canvas, Color'
+      @attr x: 0, y: 0, w: Conf.width, h: Conf.height
+      @color 'rgb(0, 43, 54)'
+      Crafty.e('TitleText').titleText 'Level'
+
+      @timeout ->
+        Crafty.scene 'Game'
+      , 3000
+
+    newLevelScreen: (level) ->
+      Crafty.e('SubTitleText').subTitleText "#{level}"
 
 
   Crafty.c 'DefeatScreen',
@@ -120,7 +157,7 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
       Crafty.e('TitleText').titleText 'You lost the game!'
 
       retry_button = Crafty.e('TextButton').textButton 'Retry', ->
-        Crafty.scene 'Game'
+        Crafty.scene 'NewLevel'
       retry_button_pos = Util.pos_to_center_entity retry_button
       retry_button_pos.y += 50
       retry_button.attr retry_button_pos

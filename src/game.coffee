@@ -7,7 +7,7 @@ define ['crafty', 'conf', 'components', 'map', 'scenes'],
     Crafty.background 'rgb(0, 43, 54)'
     Map.grid.x = 12
     Map.grid.y = 28
-    Crafty.scene 'Game'
+    Crafty.scene 'NewLevel'
 
   # Exports
   start: start
