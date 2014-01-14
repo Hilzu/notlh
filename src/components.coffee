@@ -1,4 +1,6 @@
 define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
+  enemy_speed = Conf.enemy_speed / Util.ms_per_frame
+
   Crafty.c 'Tile',
     init: ->
       @requires '2D, Canvas, Color'
@@ -91,7 +93,7 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
       @bind 'EnterFrame', @move_
 
     move_: (data) ->
-      @y += Conf.enemy_speed * data.dt
+      @y += enemy_speed * data.dt
       @destroy() if @_y > Conf.height
 
 
