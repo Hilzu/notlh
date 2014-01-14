@@ -28,13 +28,17 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
 
 
   Crafty.c 'PlayerCharacter',
+    focused: false
+
     init: ->
-      @requires 'Tile, Fourway, Collision'
+      @requires 'Tile, Fourway, Collision, Keyboard'
       @color 'rgb(42, 161, 152)'
       @fourway Conf.player_speed
       @onHit 'Solid', @stop_movement
       @onHit 'GreatAncientOne', @meet_the_ancient
       @onHit 'TheEnemy', @die
+      @bind 'KeyDown', @key_down
+      @bind 'KeyUp', @key_up
 
     stop_movement: ->
       if @_movement
@@ -56,6 +60,22 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
           Crafty.pause false
           Crafty.scene 'Defeat'
         Conf.death_screen_timeout)
+
+    key_down: ->
+      if @isDown('SHIFT') and not @focused
+        @focused = true
+        @change_speed Conf.player_speed * Conf.player_focus_speed_factor
+
+    key_up: ->
+      if not @isDown('SHIFT') and @focused
+        @focused = false
+        @change_speed Conf.player_speed
+
+    change_speed: (new_speed) ->
+      @speed x: new_speed, y: new_speed
+      # Change current movement according to new speed
+      @_movement.x = Math.sign(@_movement.x) * new_speed
+      @_movement.y = Math.sign(@_movement.y) * new_speed
 
 
   Crafty.c 'GreatAncientOne',
