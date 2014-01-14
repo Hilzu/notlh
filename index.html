@@ -11,8 +11,11 @@
         crafty: '../../lib/crafty'
       }
     });
-    require(['game'], function(Game) {
-      Game.start();
+    // We must wait for the page to load before initializing Crafty
+    window.addEventListener('load', function() {
+      require(['game'], function (Game) {
+        Game.start();
+      });
     });
   </script>
   <title>Night of the Living Horror</title>
