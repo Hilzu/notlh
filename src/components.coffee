@@ -66,7 +66,7 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
 
   Crafty.c 'TheEnemy',
     init: ->
-      @requires 'Tile, Enemy'
+      @requires 'Tile, Enemy, Collision'
       @color 'rgb(108, 113, 196)'
       @bind 'EnterFrame', @move_
 
@@ -95,7 +95,10 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
           (Map.grid.width * Map.grid.tile_size - Map.grid.tile_size) +
           Map.grid.x)
       enemy_y = -40
-      Crafty.e('TheEnemy').attr x: enemy_x, y: enemy_y
+      new_enemy = Crafty.e('TheEnemy').attr x: enemy_x, y: enemy_y
+      if new_enemy.hit 'TheEnemy'
+        new_enemy.destroy()
+        @spawn_enemy()
 
     set_spawn_factor: (factor) ->
       console.log "Setting current spawn factor to #{factor}"
