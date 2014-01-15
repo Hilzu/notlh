@@ -3,8 +3,8 @@ define ['conf'], (Conf) ->
     Math.sign = (num) ->
       num = parseFloat(num)
       if num is 0 then 0
-      else if num >= 0 then 1
-      else if num <= 0 then -1
+      else if num > 0 then 1
+      else if num < 0 then -1
       else NaN
 
 

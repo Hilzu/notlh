@@ -1,6 +1,4 @@
 define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
-  enemy_speed = Conf.enemy_speed / Util.ms_per_frame
-
   Crafty.c 'Tile',
     init: ->
       @requires '2D, Canvas, Color'
@@ -13,7 +11,7 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
         pos = Map.tile_loc_to_pos loc
         @attr x: pos.x, y: pos.y
       else
-        Map.pos_to_tile_loc(x: @x, y: @y)
+        Map.pos_to_tile_loc(x: @_x, y: @_y)
 
 
   Crafty.c 'Barrier',
@@ -85,16 +83,17 @@ define ['crafty', 'conf', 'map', 'util'], (Crafty, Conf, Map, Util) ->
       @requires 'Tile'
       @color 'rgb(211, 54, 130)'
 
+  do ->
+    enemy_speed = Conf.enemy_speed / Util.ms_per_frame
+    Crafty.c 'TheEnemy',
+      init: ->
+        @requires 'Tile, Enemy, Collision'
+        @color 'rgb(108, 113, 196)'
+        @bind 'EnterFrame', @move_
 
-  Crafty.c 'TheEnemy',
-    init: ->
-      @requires 'Tile, Enemy, Collision'
-      @color 'rgb(108, 113, 196)'
-      @bind 'EnterFrame', @move_
-
-    move_: (data) ->
-      @y += enemy_speed * data.dt
-      @destroy() if @_y > Conf.height
+      move_: (data) ->
+        @y += enemy_speed * data.dt
+        @destroy() if @_y > Conf.height
 
 
   Crafty.c 'EnemySpawner',
